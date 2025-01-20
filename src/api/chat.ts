@@ -55,17 +55,4 @@
 // // Initialize the chain when the module loads
 // initializeChain();
 
-// export async function generateResponse(question: string) {
-//   try {
-//     if (!chain) {
-//       throw new Error('Chain not initialized');
-//     }
-//     const response = await chain.invoke({
-//       question: question,
-//     });
-//     return response.answer;
-//   } catch (error) {
-//     console.error('Error generating response:', error);
-//     throw error;
-//   }
-// } 
+// Remove the generateResponse function entirely 

@@ -17,19 +17,16 @@ export default defineConfig(({ mode }) => ({
       name: 'configure-server',
       configureServer(server: ViteDevServer) {
         const app = express();
-        import('./src/api/chat').then(({ generateResponse }) => {
-          app.post('/api/chat', async (req, res) => {
-            try {
-              const { question } = req.body;
-              const response = await generateResponse(question);
-              res.json({ response });
-            } catch (error) {
-              console.error('Error:', error);
-              res.status(500).json({ error: 'Failed to generate response' });
-            }
-          });
-          server.middlewares.use(app);
+        app.post('/api/chat', async (req, res) => {
+          try {
+            const { question } = req.body;
+            res.json({ response: 'This functionality has been removed.' });
+          } catch (error) {
+            console.error('Error:', error);
+            res.status(500).json({ error: 'Failed to generate response' });
+          }
         });
+        server.middlewares.use(app);
       },
     },
   ].filter(Boolean),
@@ -39,3 +36,8 @@ export default defineConfig(({ mode }) => ({
     },
   },
 }));
+
+// Comment out any langchain-related code here if present
+// import { SomeLangchainModule } from 'langchain-community/document_loaders/fs/pdf'; // Example of what to comment out
+// import { SomeLangchainConfig } from '@langchain/core/vectorstores/memory'; // Example of what to comment out
+// ... other langchain-related configurations ...
