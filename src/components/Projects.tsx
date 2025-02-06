@@ -3,7 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Github, ChevronLeft, ChevronRight } from "lucide-react";
 import projectATS from "@/images/project-ATS.png";
 import servicesNLP from "@/images/services-nlp.png";
-import dataViz from "@/images/DataVisualizationIcon.png";
+import foodNutriScan from "@/images/FoodNutriScan.jpg";
+import textToSql from "@/images/TextToSql.png";
+import opinioTrace from "@/images/opinioTrace.jpg";
+import { useState } from 'react';
 
 const Projects = () => {
   const projects = [
@@ -14,18 +17,42 @@ const Projects = () => {
       github: "https://github.com/Darshit98/AWSBedrock"
     },
     {
+      title: "Food NutriScan",
+      description: "It is a food recognition system developed using Generative AI and Gemini API, achieving 90% accuracy in ingredient identification through optimized neural network architecture",
+      image: foodNutriScan,
+      github: "https://github.com/Darshit98/FoodNutriScan"
+    },
+    {
+      title: "TextToSql",
+      description: "This application converts natural language questions into optimized SQL queries using Google's Gemini model. The application is designed to help users easily retrieve data from a SQL database by simply asking questions in English.",
+      image: textToSql,
+      github: "https://github.com/Darshit98/TextToSql"
+    },
+    {
+      title: "Opinio Trace",
+      description: "Engineered end-to-end data pipeline for large-scale sentiment analysis, implementing statistical modeling and transformer based approaches for pattern recognition",
+      image: opinioTrace,
+      github: "https://github.com/Darshit98/OpinioTrace"
+    },
+    {
       title: "ATS Optimization System", 
       description: "Created an Applicant Tracking System to improve resume scanning and job matching processes.",
       image: projectATS,
       github: "#"
-    },
-    {
-      title: "Data Visualization Dashboard",
-      description: "Built an interactive dashboard for visualizing complex datasets using modern charting libraries.",
-      image: dataViz,
-      github: "#"
     }
   ];
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % Math.ceil(projects.length / 3));
+  };
+
+  const handlePrevious = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + Math.ceil(projects.length / 3)) % Math.ceil(projects.length / 3));
+  };
+
+  const displayedProjects = projects.slice(currentIndex * 3, currentIndex * 3 + 3);
 
   return (
     <section id="projects" className="py-20 bg-[#F6BD60]">
@@ -35,13 +62,13 @@ const Projects = () => {
           <Button 
             variant="ghost" 
             className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-16 z-10 h-12 w-12 rounded-full bg-[#6D4C3D]/10 hover:bg-[#6D4C3D]/20 border-2 border-[#6D4C3D]/30"
-            onClick={() => console.log('Previous')}
+            onClick={handlePrevious}
           >
             <ChevronLeft className="h-8 w-8 text-[#6D4C3D]" />
           </Button>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project, index) => (
+            {displayedProjects.map((project, index) => (
               <Card key={index} className="flex flex-col h-full overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-gradient-to-br from-[#F6BD60]/10 to-[#BA5A31]/10 border-[#6D4C3D]/20">
                 <div className="relative h-48 overflow-hidden bg-[#F6BD60]/5">
                   <img 
@@ -71,7 +98,7 @@ const Projects = () => {
           <Button 
             variant="ghost" 
             className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-16 z-10 h-12 w-12 rounded-full bg-[#6D4C3D]/10 hover:bg-[#6D4C3D]/20 border-2 border-[#6D4C3D]/30"
-            onClick={() => console.log('Next')}
+            onClick={handleNext}
           >
             <ChevronRight className="h-8 w-8 text-[#6D4C3D]" />
           </Button>
