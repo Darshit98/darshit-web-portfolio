@@ -10,7 +10,7 @@ const Hero = () => {
 
   useEffect(() => {
     const typed = new Typed(typedRef.current, {
-      strings: ["AI Engineering", "Data Engineering", "Data Analysis", "Machine Learning"],
+      strings: ["AI/ML Engineering", "Data Engineering", "Data Analysis"],
       typeSpeed: 50,
       backSpeed: 30,
       loop: true
