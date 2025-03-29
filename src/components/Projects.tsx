@@ -7,10 +7,17 @@ import foodNutriScan from "@/images/FoodNutriScan.jpg";
 import textToSql from "@/images/TextToSql.png";
 import opinioTrace from "@/images/opinioTrace.jpg";
 import financeAIAgent from "@/images/FinanceAIAgent.jpeg"
+import webcrawler from "@/images/webCrawler.png"
 import { useState } from 'react';
 
 const Projects = () => {
   const projects = [
+    {
+      title: "Rufus - Web Crawler",
+      description: "Rufus is an intelligent web data extraction tool designed to crawl websites and extract relevant information based on user-defined instructions.",
+      image: webcrawler,
+      github: "https://github.com/Darshit98/Rufus-AI-Agent"
+    },
     {
       title: "Financial AI Agent",
       description: "AgenticAI is a Python-based project that integrates multiple AI agents to perform web searches and financial analysis. The project utilizes the Groq model and various tools to provide users with accurate and up-to-date information.",
