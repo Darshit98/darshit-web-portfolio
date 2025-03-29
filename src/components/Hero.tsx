@@ -42,7 +42,7 @@ const Hero = () => {
               I'm Darshit Shah
             </h1>
             <h3 className="text-2xl md:text-3xl font-bold text-[#ff8c00] animate-in fade-in slide-in-from-bottom-4 duration-700">
-              Expert in <span ref={typedRef}></span>
+              Skilled and Experienced in <span ref={typedRef}></span>
             </h3>
           </div>
           
