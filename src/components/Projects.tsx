@@ -6,10 +6,17 @@ import servicesNLP from "@/images/services-nlp.png";
 import foodNutriScan from "@/images/FoodNutriScan.jpg";
 import textToSql from "@/images/TextToSql.png";
 import opinioTrace from "@/images/opinioTrace.jpg";
+import financeAIAgent from "@/images/FinanceAIAgent.jpeg"
 import { useState } from 'react';
 
 const Projects = () => {
   const projects = [
+    {
+      title: "Financial AI Agent",
+      description: "AgenticAI is a Python-based project that integrates multiple AI agents to perform web searches and financial analysis. The project utilizes the Groq model and various tools to provide users with accurate and up-to-date information.",
+      image: financeAIAgent,
+      github: "https://github.com/Darshit98/AgenticAI"
+    },
     {
       title: "SmartQuery Chatbot",
       description: "Developed an intelligent chatbot using AWS Bedrock and LangChain for enhanced user interactions.",
