@@ -96,7 +96,7 @@ const Experience = () => {
 
             <TimelineItem 
               company="LTI - Larsen & Toubro Infotech"
-              role="Data Engineer"
+              role="Senior Quality Engineer"
               period="June 2019 - July 2022"
               description={[
                 "Led the UBS team to launch a real-time banking data validation system using Kafka and Splunk, improving data accuracy by 10% and reducing processing time by 40 seconds, through optimized SQL scripts",
