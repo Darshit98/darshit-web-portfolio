@@ -3,7 +3,8 @@ import { Building2 } from "lucide-react";
 import northeasternLogo from "../images/Northeastern_University.jpg";
 import founderwayLogo from "../images/Founderway.jpg";
 import ltiLogo from "../images/LTIMindtree.jpg";
-import vyleroLogo from "../images/vylero-logo.png";
+// import vyleroLogo from "../images/vylero-logo.png";
+import rivianLogo from "../images/Rivian.png";
 
 const Experience = () => {
   return (
@@ -19,6 +20,18 @@ const Experience = () => {
           
           {/* Tree branches and leaves container */}
           <div className="space-y-24">
+          <TimelineItem 
+              company="Rivian Automotive"
+              role="AI Technical Lead"
+              period="April 2025 - Present"
+              description={[
+                
+              ]}
+              align="left"
+              icon="🌳"
+              logo={rivianLogo}
+           />
+{/* 
 
 
           <TimelineItem 
@@ -35,7 +48,7 @@ const Experience = () => {
               icon="🌳"
               logo={vyleroLogo}
             />
-
+ */}
             <TimelineItem 
               company="Northeastern University"
               role="Graduate Teaching Assistant - Generative AI with LLM in Data"
