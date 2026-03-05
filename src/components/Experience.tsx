@@ -5,21 +5,48 @@ import founderwayLogo from "../images/Founderway.jpg";
 import ltiLogo from "../images/LTIMindtree.jpg";
 // import vyleroLogo from "../images/vylero-logo.png";
 import rivianLogo from "../images/Rivian.png";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { staggerContainer, tilt3D, textReveal } from "@/lib/animations";
+import { useRef } from "react";
 
 const Experience = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start center", "end center"],
+  });
+
+  const trunkHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+
   return (
-    <section id="experience" className="py-20 bg-gradient-to-br from-[#1e3a8a] to-gray-800 text-white">
+    <section
+      ref={sectionRef}
+      id="experience"
+      className="py-20 bg-gradient-to-br from-[#1e3a8a] to-gray-800 text-white"
+    >
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center mb-16 font-heading dark:text-white">
-          Professional Journey
-        </h2>
+        <ScrollReveal direction="down">
+          <h2 className="text-4xl font-bold text-center mb-16 font-heading dark:text-white">
+            Professional Journey
+          </h2>
+        </ScrollReveal>
         
         <div className="max-w-5xl mx-auto relative">
-          {/* Tree trunk */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-full bg-gradient-to-b from-[#8B4513] via-[#A0522D] to-[#8B4513] rounded-full" />
+          {/* Animated Tree trunk */}
+          <motion.div
+            className="absolute left-1/2 transform -translate-x-1/2 w-4 h-full bg-gradient-to-b from-[#8B4513] via-[#A0522D] to-[#8B4513] rounded-full origin-top"
+            style={{ scaleY: trunkHeight }}
+          />
           
           {/* Tree branches and leaves container */}
-          <div className="space-y-24">
+          <motion.div
+            className="space-y-24"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+          >
           <TimelineItem 
               company="Rivian Automotive"
               role="AI Technical Lead"
@@ -109,7 +136,7 @@ const Experience = () => {
               icon="🌳"
               logo={ltiLogo}
             />
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -128,9 +155,15 @@ interface TimelineItemProps {
 
 const TimelineItem = ({ company, role, period, description, align, icon, logo }: TimelineItemProps) => {
   return (
-    <div className={`relative flex ${align === 'left' ? 'justify-start' : 'justify-end'} w-full group`}>
+    <motion.div
+      className={`relative flex ${align === 'left' ? 'justify-start' : 'justify-end'} w-full group`}
+      variants={textReveal}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+    >
       {/* Curved branch */}
-      <div 
+      <motion.div
         className={`absolute top-1/2 h-2 bg-gradient-to-r from-[#8B4513] to-[#A0522D] transform -translate-y-1/2 ${
           align === 'left' ? 'right-[50%]' : 'left-[50%]'
         } w-[calc(50%-2rem)]`}
@@ -142,6 +175,10 @@ const TimelineItem = ({ company, role, period, description, align, icon, logo }:
           transform: `translateY(-50%) ${align === 'left' ? 'rotate(-5deg)' : 'rotate(5deg)'}`,
           boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
         }}
+        initial={{ scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
       >
         {/* Branch texture */}
         <div 
@@ -150,48 +187,82 @@ const TimelineItem = ({ company, role, period, description, align, icon, logo }:
             background: 'repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(139, 69, 19, 0.5) 5px, rgba(139, 69, 19, 0.5) 10px)'
           }}
         />
-      </div>
+      </motion.div>
       
       <div className={`w-8/12 ${align === 'right' && 'ml-auto'}`}>
-        <Card className="relative transform transition-all duration-300 hover:scale-105 hover:shadow-xl dark:bg-gray-800 dark:border-gray-700">
-          {/* Leaf icon */}
-          <div 
-            className="absolute top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-gradient-to-br from-green-400 to-green-600 dark:from-green-300 dark:to-green-500 border-4 border-white dark:border-gray-900 shadow-lg transform transition-transform duration-300 group-hover:scale-125 flex items-center justify-center text-lg"
-            style={{ [align === 'left' ? 'right' : 'left']: '-44px' }}
-          >
-            {icon}
-          </div>
-          
-          <CardHeader className="space-y-1">
-            <div className="flex items-center gap-4 mb-1">
-              <img 
-                src={logo} 
-                alt={company} 
-                className="w-12 h-12 rounded-full object-cover border-2 border-green-500 shadow-lg"
-              />
-              <div className="flex-1">
-                <span className="text-sm font-medium text-green-600 dark:text-green-400">{period}</span>
-                <CardTitle className="text-xl font-heading">
-                  <span className="bg-gradient-to-r from-green-600 to-green-400 dark:from-green-400 dark:to-green-300 bg-clip-text text-transparent font-bold">
-                    {role}
-                  </span>
-                  <span className="block text-lg mt-1 text-muted-foreground font-medium">
-                    {company}
-                  </span>
-                </CardTitle>
+        <motion.div
+          variants={tilt3D}
+          initial="rest"
+          whileHover="hover"
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        >
+          <Card className="relative transform transition-all duration-300 dark:bg-gray-800 dark:border-gray-700">
+            {/* Leaf icon */}
+            <motion.div
+              className="absolute top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-gradient-to-br from-green-400 to-green-600 dark:from-green-300 dark:to-green-500 border-4 border-white dark:border-gray-900 shadow-lg flex items-center justify-center text-lg z-10"
+              style={{ [align === 'left' ? 'right' : 'left']: '-44px' }}
+              whileHover={{
+                scale: 1.3,
+                rotate: [0, -10, 10, -10, 0],
+              }}
+              transition={{ duration: 0.5 }}
+            >
+              {icon}
+            </motion.div>
+            
+            <CardHeader className="space-y-1">
+              <div className="flex items-center gap-4 mb-1">
+                <motion.img
+                  src={logo}
+                  alt={company}
+                  className="w-12 h-12 rounded-full object-cover border-2 border-green-500 shadow-lg"
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                />
+                <div className="flex-1">
+                  <motion.span
+                    className="text-sm font-medium text-green-600 dark:text-green-400"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    {period}
+                  </motion.span>
+                  <CardTitle className="text-xl font-heading">
+                    <span className="bg-gradient-to-r from-green-600 to-green-400 dark:from-green-400 dark:to-green-300 bg-clip-text text-transparent font-bold">
+                      {role}
+                    </span>
+                    <span className="block text-lg mt-1 text-muted-foreground font-medium">
+                      {company}
+                    </span>
+                  </CardTitle>
+                </div>
               </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <ul className="list-disc pl-4 space-y-2 text-muted-foreground">
-              {description.map((point, index) => (
-                <li key={index} className="text-sm leading-relaxed">{point}</li>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
+            </CardHeader>
+            <CardContent>
+              <motion.ul
+                className="list-disc pl-4 space-y-2 text-muted-foreground"
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
+                {description.map((point, index) => (
+                  <motion.li
+                    key={index}
+                    className="text-sm leading-relaxed"
+                    variants={textReveal}
+                  >
+                    {point}
+                  </motion.li>
+                ))}
+              </motion.ul>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

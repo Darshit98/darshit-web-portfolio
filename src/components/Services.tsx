@@ -3,6 +3,9 @@ import dataIcon from "@/images/DataIcon.png";
 import aiIcon from "@/images/AIIcon.png";
 import dataVizIcon from "@/images/DataVisualizationIcon.png";
 import nlpIcon from "@/images/services-nlp.png";
+import { motion } from "framer-motion";
+import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { staggerContainer, tilt3D, iconRotate, iconPulse, borderMorph, hoverGlow } from "@/lib/animations";
 
 const Services = () => {
   const services = [
@@ -31,40 +34,82 @@ const Services = () => {
   return (
     <section id="services" className="py-20 bg-gradient-to-br from-[#1e3a8a] to-gray-800 text-white">
       <div className="container mx-auto px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-5xl font-bold mb-4">
-            <span className="text-white">My </span>
-            <span className="text-[#60a5fa]">Expertise</span>
-          </h2>
-        </div>
+        <ScrollReveal direction="down">
+          <div className="text-center mb-12">
+            <h2 className="text-5xl font-bold mb-4">
+              <span className="text-white">My </span>
+              <span className="text-[#60a5fa]">Expertise</span>
+            </h2>
+          </div>
+        </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 max-w-7xl mx-auto"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
           {services.map((service, index) => (
-            <Card 
+            <motion.div
               key={index}
-              className="bg-gray-800/50 border-gray-700 hover:bg-gray-800/70 transition-all duration-300 group
-                        relative before:absolute before:inset-0 before:rounded-lg before:border-2 
-                        before:border-transparent before:transition-all hover:before:border-[#60a5fa]/50
-                        hover:before:shadow-[0_0_15px_rgba(96,165,250,0.5)] before:z-0"
+              variants={tilt3D}
+              initial="rest"
+              whileHover="hover"
+              className="group"
             >
-              <CardContent className="p-6 relative z-10">
-                <div className="flex flex-col items-center text-center space-y-4">
-                  <div className="w-24 h-24 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <img
-                      src={service.icon}
-                      alt={service.title}
-                      className="w-full h-full object-contain"
-                    />
+              <motion.div variants={borderMorph} initial="rest" whileHover="hover">
+                <Card 
+                  className="bg-gray-800/50 border-gray-700 hover:bg-gray-800/70 transition-all duration-300
+                            relative overflow-hidden"
+                >
+                <motion.div
+                  className="absolute inset-0 rounded-lg border-2 border-transparent"
+                  variants={hoverGlow}
+                  initial="rest"
+                  whileHover="hover"
+                />
+                <CardContent className="p-6 relative z-10">
+                  <div className="flex flex-col items-center text-center space-y-4">
+                    <motion.div
+                      className="w-24 h-24 flex items-center justify-center mb-4"
+                      variants={iconPulse}
+                      initial="rest"
+                      whileHover="hover"
+                    >
+                      <motion.img
+                        src={service.icon}
+                        alt={service.title}
+                        className="w-full h-full object-contain"
+                        whileHover={{ rotate: [0, -10, 10, -10, 0] }}
+                        transition={{ duration: 0.5 }}
+                      />
+                    </motion.div>
+                    <motion.h3
+                      className="text-xl font-bold text-[#60a5fa]"
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      {service.title}
+                    </motion.h3>
+                    <motion.p
+                      className="text-gray-300 text-sm leading-relaxed"
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1 + 0.2 }}
+                    >
+                      {service.description}
+                    </motion.p>
                   </div>
-                  <h3 className="text-xl font-bold text-[#60a5fa]">{service.title}</h3>
-                  <p className="text-gray-300 text-sm leading-relaxed">
-                    {service.description}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+                </Card>
+              </motion.div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

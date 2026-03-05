@@ -9,11 +9,30 @@ import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import { Toaster } from "@/components/ui/sonner";
+import { ScrollProgressBar } from "@/components/animations/ScrollProgressBar";
+import { useEffect } from "react";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const Index = () => {
+  const prefersReducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    // Smooth scroll behavior
+    if (!prefersReducedMotion) {
+      document.documentElement.style.scrollBehavior = "smooth";
+    } else {
+      document.documentElement.style.scrollBehavior = "auto";
+    }
+
+    return () => {
+      document.documentElement.style.scrollBehavior = "auto";
+    };
+  }, [prefersReducedMotion]);
+
   return (
     <ThemeProvider defaultTheme="system" enableSystem>
       <div className="min-h-screen bg-background text-foreground">
+        {!prefersReducedMotion && <ScrollProgressBar />}
         <Header />
         <main>
           <Hero />
