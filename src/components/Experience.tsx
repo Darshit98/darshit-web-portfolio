@@ -155,18 +155,18 @@ const Experience = () => {
             />
           )}
 
-          <div className="relative h-full container mx-auto px-6 xl:px-8 pt-10 md:pt-12 pb-8">
-            <div className="text-center mb-6 md:mb-7">
+          <div className="relative h-full container mx-auto px-6 xl:px-8 pt-7 md:pt-8 pb-6">
+            <div className="text-center mb-4 md:mb-5">
               <h2 className="text-4xl md:text-5xl font-heading font-bold tracking-tight">
                 Professional Journey
               </h2>
             </div>
 
-            <div className="grid gap-6 xl:gap-8 lg:grid-cols-[1fr_320px] items-center h-[calc(100%-88px)]">
-              <div className="relative h-full min-h-[500px] flex items-center justify-center">
+            <div className="grid gap-5 xl:gap-7 lg:grid-cols-[minmax(0,1fr)_320px] items-start h-[calc(100%-72px)]">
+              <div className="relative h-full min-h-[500px] pt-1">
                 {!prefersReducedMotion && previousCard && (
                   <motion.div
-                    className="absolute inset-x-4 md:inset-x-10 top-[54%] -translate-y-1/2 h-[72%] rounded-[28px] border border-white/12 bg-white/6 backdrop-blur-md"
+                    className="absolute inset-x-4 md:inset-x-10 top-[14%] h-[72%] rounded-[28px] border border-white/12 bg-white/6 backdrop-blur-md"
                     initial={false}
                     animate={{ rotate: -5, scale: 0.94, opacity: 0.2, x: -24 }}
                     transition={{ duration: 0.35 }}
@@ -175,7 +175,7 @@ const Experience = () => {
 
                 {!prefersReducedMotion && upcomingCard && (
                   <motion.div
-                    className="absolute inset-x-4 md:inset-x-10 top-[48%] -translate-y-1/2 h-[72%] rounded-[28px] border border-white/12 bg-white/6 backdrop-blur-md"
+                    className="absolute inset-x-4 md:inset-x-10 top-[10%] h-[72%] rounded-[28px] border border-white/12 bg-white/6 backdrop-blur-md"
                     initial={false}
                     animate={{ rotate: 4, scale: 0.93, opacity: 0.14, x: 20 }}
                     transition={{ duration: 0.35 }}
@@ -210,7 +210,7 @@ const Experience = () => {
                           }
                     }
                     transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
-                    className="absolute inset-x-0 top-1/2 -translate-y-1/2"
+                    className="absolute inset-x-0 top-0"
                   >
                     <ExperienceCard entry={experiences[activeCard]} />
                   </motion.div>
@@ -254,11 +254,11 @@ const Experience = () => {
 
 const ExperienceCard = ({ entry }: { entry: ExperienceEntry }) => {
   return (
-    <Card className="relative overflow-hidden rounded-[30px] border border-white/28 bg-[#0a1536]/80 shadow-[0_28px_90px_rgba(2,8,28,0.6)] backdrop-blur-xl">
+    <Card className="relative mx-auto w-full max-w-[min(100%,68rem)] overflow-hidden rounded-[30px] border border-white/28 bg-[#0a1536]/80 shadow-[0_28px_90px_rgba(2,8,28,0.6)] backdrop-blur-xl">
       <div className="absolute inset-0 bg-gradient-to-br from-cyan-200/12 via-transparent to-fuchsia-200/10" />
       <div className="absolute inset-0 rounded-[30px] border border-cyan-200/25 pointer-events-none" />
 
-      <CardHeader className="relative z-10 pb-1 pt-6 md:pt-7 px-5 md:px-7">
+      <CardHeader className="relative z-10 px-5 pb-1 pt-5 md:px-6 md:pt-5">
         <div className="flex items-start gap-4 md:gap-5">
           <img
             src={entry.logo}
@@ -276,22 +276,22 @@ const ExperienceCard = ({ entry }: { entry: ExperienceEntry }) => {
               </span>
             </div>
 
-            <CardTitle className="mt-2 text-2xl md:text-[2rem] leading-tight font-heading text-white">
+            <CardTitle className="mt-1.5 text-2xl md:text-[1.8rem] leading-tight font-heading text-white">
               {entry.role}
             </CardTitle>
-            <p className="text-cyan-50 font-medium text-base md:text-xl mt-1.5 leading-tight">
+            <p className="mt-1 text-cyan-50 font-medium text-base md:text-[1.08rem] leading-tight">
               {entry.company}
             </p>
           </div>
         </div>
       </CardHeader>
 
-      <CardContent className="relative z-10 px-5 md:px-7 pb-5 md:pb-6 pt-2">
-        <ul className="space-y-2.5">
+      <CardContent className="relative z-10 px-5 pb-5 pt-1.5 md:px-6 md:pb-5 md:pt-1">
+        <ul className="space-y-2 md:space-y-1.5">
           {entry.description.map((point, index) => (
             <li key={index} className="flex items-start gap-3">
               <span className="mt-2 h-1.5 w-1.5 rounded-full bg-cyan-200/90 shrink-0" />
-              <span className="text-slate-100 text-[13.5px] md:text-[14px] leading-6 md:leading-[1.65]">
+              <span className="text-slate-100 text-[13.5px] md:text-[13.5px] leading-6 md:leading-[1.48]">
                 {point}
               </span>
             </li>
@@ -303,6 +303,7 @@ const ExperienceCard = ({ entry }: { entry: ExperienceEntry }) => {
 };
 
 export default Experience;
+
 
 
 
