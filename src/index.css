@@ -4,7 +4,29 @@
 @tailwind components;
 @tailwind utilities;
 
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: clip;
+}
 @layer base {
+  html,
+  body {
+    position: relative;
+    overflow-x: clip;
+  }
+
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -131,3 +153,11 @@
     opacity: 1;
   }
 }
+
+
+
+
+
+
+
+

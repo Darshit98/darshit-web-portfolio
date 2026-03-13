@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -130,6 +137,9 @@ const ResumeRequestDialog = () => {
       <DialogContent className="sm:max-w-[425px] bg-background text-foreground">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-foreground">Request Resume</DialogTitle>
+          <DialogDescription className="text-sm text-muted-foreground">
+            Share your details and a short note so I can send the resume to the right email.
+          </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           <div>

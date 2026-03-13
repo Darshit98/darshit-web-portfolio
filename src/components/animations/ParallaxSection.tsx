@@ -1,5 +1,6 @@
 import { motion, MotionProps, useScroll, useTransform } from "framer-motion";
 import { ReactNode, useRef } from "react";
+import { cn } from "@/lib/utils";
 
 interface ParallaxSectionProps extends Omit<MotionProps, "style"> {
   children: ReactNode;
@@ -31,10 +32,12 @@ export const ParallaxSection = ({
     <motion.div
       ref={ref}
       style={{ y }}
-      className={className}
+      className={cn("relative", className)}
       {...props}
     >
       {children}
     </motion.div>
   );
 };
+
+

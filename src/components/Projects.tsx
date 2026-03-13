@@ -8,58 +8,80 @@ import textToSql from "@/images/TextToSql.png";
 import opinioTrace from "@/images/opinioTrace.jpg";
 import financeAIAgent from "@/images/FinanceAIAgent.jpeg";
 import webcrawler from "@/images/webCrawler.png";
-import { useMemo, useRef, useState } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { MouseEvent, ReactNode, useMemo, useRef, useState } from "react";
+import {
+  motion,
+  type MotionValue,
+  useMotionValue,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
-import { hoverLift } from "@/lib/animations";
+import { getSectionFocusRange, hoverLift } from "@/lib/animations";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const ITEMS_PER_PAGE = 3;
 
 const Projects = () => {
-  const projects = [
+  const projects = useMemo(() => [
     {
       title: "Rufus - Web Crawler",
-      description: "Rufus is an intelligent web data extraction tool designed to crawl websites and extract relevant information based on user-defined instructions.",
+      description:
+        "Rufus is an intelligent web data extraction tool designed to crawl websites and extract relevant information based on user-defined instructions.",
       image: webcrawler,
       github: "https://github.com/Darshit98/Rufus-AI-Agent",
     },
     {
       title: "Financial AI Agent",
-      description: "AgenticAI is a Python-based project that integrates multiple AI agents to perform web searches and financial analysis. The project utilizes the Groq model and various tools to provide users with accurate and up-to-date information.",
+      description:
+        "AgenticAI is a Python-based project that integrates multiple AI agents to perform web searches and financial analysis. The project utilizes the Groq model and various tools to provide users with accurate and up-to-date information.",
       image: financeAIAgent,
       github: "https://github.com/Darshit98/AgenticAI",
     },
     {
       title: "SmartQuery Chatbot",
-      description: "Developed an intelligent chatbot using AWS Bedrock and LangChain for enhanced user interactions.",
+      description:
+        "Developed an intelligent chatbot using AWS Bedrock and LangChain for enhanced user interactions.",
       image: servicesNLP,
       github: "https://github.com/Darshit98/AWSBedrock",
     },
     {
       title: "Food NutriScan",
-      description: "It is a food recognition system developed using Generative AI and Gemini API, achieving 90% accuracy in ingredient identification through optimized neural network architecture",
+      description:
+        "It is a food recognition system developed using Generative AI and Gemini API, achieving 90% accuracy in ingredient identification through optimized neural network architecture",
       image: foodNutriScan,
       github: "https://github.com/Darshit98/FoodNutriScan",
     },
     {
       title: "TextToSql",
-      description: "This application converts natural language questions into optimized SQL queries using Google's Gemini model. The application is designed to help users easily retrieve data from a SQL database by simply asking questions in English.",
+      description:
+        "This application converts natural language questions into optimized SQL queries using Google's Gemini model. The application is designed to help users easily retrieve data from a SQL database by simply asking questions in English.",
       image: textToSql,
       github: "https://github.com/Darshit98/TextToSql",
     },
     {
       title: "Opinio Trace",
-      description: "Engineered end-to-end data pipeline for large-scale sentiment analysis, implementing statistical modeling and transformer based approaches for pattern recognition",
+      description:
+        "Engineered end-to-end data pipeline for large-scale sentiment analysis, implementing statistical modeling and transformer based approaches for pattern recognition",
       image: opinioTrace,
       github: "https://github.com/Darshit98/OpinioTrace",
     },
     {
       title: "ATS Optimization System",
-      description: "Created an Applicant Tracking System to improve resume scanning and job matching processes.",
+      description:
+        "Created an Applicant Tracking System to improve resume scanning and job matching processes.",
       image: projectATS,
       github: "#",
     },
-  ];
+  ], []);
+
+  const sectionRef = useRef<HTMLElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
 
   const pageCount = Math.ceil(projects.length / ITEMS_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(0);
@@ -74,56 +96,20 @@ const Projects = () => {
 
   const displayedProjects = useMemo(() => {
     const startIndex = currentPage * ITEMS_PER_PAGE;
+
     return Array.from({ length: ITEMS_PER_PAGE }, (_, offset) => {
       const projectIndex = (startIndex + offset) % projects.length;
       return projects[projectIndex];
     });
   }, [currentPage, projects]);
 
-  const ParallaxCard = ({ children, index }: { children: React.ReactNode; index: number }) => {
-    const ref = useRef<HTMLDivElement>(null);
-    const x = useMotionValue(0);
-    const y = useMotionValue(0);
-    const springConfig = { damping: 20, stiffness: 300 };
-    const xSpring = useSpring(x, springConfig);
-    const ySpring = useSpring(y, springConfig);
-
-    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!ref.current) return;
-      const rect = ref.current.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const distanceX = e.clientX - centerX;
-      const distanceY = e.clientY - centerY;
-      x.set(distanceX * 0.1);
-      y.set(distanceY * 0.1);
-    };
-
-    const handleMouseLeave = () => {
-      x.set(0);
-      y.set(0);
-    };
-
-    return (
-      <motion.div
-        ref={ref}
-        style={{ x: xSpring, y: ySpring }}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: index * 0.08, duration: 0.35 }}
-      >
-        {children}
-      </motion.div>
-    );
-  };
-
   return (
-    <section id="projects" className="py-20 bg-[#F6BD60]">
+    <section ref={sectionRef} id="projects" className="relative py-20 bg-[#F6BD60] overflow-x-clip">
       <div className="container mx-auto px-8">
         <ScrollReveal direction="down">
-          <h2 className="text-4xl font-bold text-center mb-12 font-heading text-[#6D4C3D]">Projects</h2>
+          <h2 className="text-4xl font-bold text-center mb-12 font-heading text-[#6D4C3D]">
+            Projects
+          </h2>
         </ScrollReveal>
 
         <div className="relative max-w-7xl mx-auto">
@@ -140,12 +126,18 @@ const Projects = () => {
           <motion.div
             key={currentPage}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            initial={{ opacity: 0.4 }}
+            initial={{ opacity: 0.35 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.3 }}
           >
             {displayedProjects.map((project, index) => (
-              <ParallaxCard key={`${project.title}-${currentPage}-${index}`} index={index}>
+              <ParallaxCard
+                key={`${project.title}-${currentPage}-${index}`}
+                index={index}
+                totalCards={displayedProjects.length}
+                scrollProgress={scrollYProgress}
+                prefersReducedMotion={prefersReducedMotion}
+              >
                 <motion.div variants={hoverLift} initial="rest" whileHover="hover" layout>
                   <Card className="flex flex-col h-full overflow-hidden transition-shadow duration-300 bg-gradient-to-br from-[#F6BD60]/10 to-[#BA5A31]/10 border-[#6D4C3D]/20">
                     <motion.div
@@ -153,16 +145,34 @@ const Projects = () => {
                       whileHover={{ scale: 1.05 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <img src={project.image} alt={project.title} className="w-full h-full object-contain p-4" />
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-contain p-4"
+                      />
                     </motion.div>
                     <CardHeader className="flex-grow">
-                      <CardTitle className="text-xl font-heading text-[#6D4C3D] text-center">{project.title}</CardTitle>
-                      <CardDescription className="font-body text-[#6D4C3D]/80">{project.description}</CardDescription>
+                      <CardTitle className="text-xl font-heading text-[#6D4C3D] text-center">
+                        {project.title}
+                      </CardTitle>
+                      <CardDescription className="font-body text-[#6D4C3D]/80">
+                        {project.description}
+                      </CardDescription>
                     </CardHeader>
                     <CardContent className="mt-auto pb-6">
                       <div className="flex justify-center">
-                        <Button variant="outline" size="sm" asChild className="border-[#6D4C3D] text-[#6D4C3D] hover:bg-[#6D4C3D]/10">
-                          <a href={project.github} target="_blank" rel="noopener noreferrer" className="flex items-center">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          asChild
+                          className="border-[#6D4C3D] text-[#6D4C3D] hover:bg-[#6D4C3D]/10"
+                        >
+                          <a
+                            href={project.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center"
+                          >
                             <Github className="mr-2 h-4 w-4" />
                             Code
                           </a>
@@ -190,4 +200,89 @@ const Projects = () => {
   );
 };
 
+interface ParallaxCardProps {
+  children: ReactNode;
+  index: number;
+  totalCards: number;
+  scrollProgress: MotionValue<number>;
+  prefersReducedMotion: boolean;
+}
+
+const ParallaxCard = ({
+  children,
+  index,
+  totalCards,
+  scrollProgress,
+  prefersReducedMotion,
+}: ParallaxCardProps) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const springConfig = { damping: 20, stiffness: 300 };
+  const xSpring = useSpring(x, springConfig);
+  const ySpring = useSpring(y, springConfig);
+
+  const [start, center, end] = getSectionFocusRange(index, totalCards, 0.2);
+
+  const focusScale = useTransform(scrollProgress, [start, center, end], [0.95, 1.03, 0.97]);
+  const focusOpacity = useTransform(scrollProgress, [start, center, end], [0.7, 1, 0.78]);
+  const focusY = useTransform(scrollProgress, [start, center, end], [24, 0, 16]);
+  const focusRotateX = useTransform(scrollProgress, [start, center, end], [2.5, 0, -1.5]);
+
+  const scaleSpring = useSpring(focusScale, { damping: 28, stiffness: 210 });
+  const opacitySpring = useSpring(focusOpacity, { damping: 28, stiffness: 210 });
+  const focusYSpring = useSpring(focusY, { damping: 30, stiffness: 220 });
+  const rotateSpring = useSpring(focusRotateX, { damping: 30, stiffness: 220 });
+  const combinedY = useTransform([ySpring, focusYSpring], ([pointerY, scrollY]: number[]) => pointerY + scrollY);
+
+  const handleMouseMove = (event: MouseEvent<HTMLDivElement>) => {
+    if (!ref.current || prefersReducedMotion) return;
+
+    const rect = ref.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const distanceX = event.clientX - centerX;
+    const distanceY = event.clientY - centerY;
+
+    x.set(distanceX * 0.1);
+    y.set(distanceY * 0.1);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      style={
+        prefersReducedMotion
+          ? undefined
+          : {
+              x: xSpring,
+              y: combinedY,
+              scale: scaleSpring,
+              opacity: opacitySpring,
+              rotateX: rotateSpring,
+              transformPerspective: 900,
+              willChange: "transform, opacity",
+            }
+      }
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.08, duration: 0.35 }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
 export default Projects;
+
+
+
+
+

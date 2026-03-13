@@ -294,3 +294,55 @@ export const getReducedMotionVariants = (variants: Variants): Variants => {
   }
   return variants;
 };
+
+export interface ScrollScenePreset {
+  backgroundFar: [number, number];
+  backgroundNear: [number, number];
+  contentY: [number, number];
+  contentScale: [number, number];
+  contentOpacity: [number, number];
+  ambientY: [number, number];
+  ambientOpacity: [number, number];
+}
+
+const clampProgress = (value: number) => Math.min(1, Math.max(0, value));
+
+export const createBalancedScrollScene = (intensity = 1): ScrollScenePreset => {
+  const safeIntensity = Math.min(1.2, Math.max(0.4, intensity));
+
+  return {
+    backgroundFar: [0, 26 * safeIntensity],
+    backgroundNear: [0, 44 * safeIntensity],
+    contentY: [0, -120 * safeIntensity],
+    contentScale: [1, 1 - 0.06 * safeIntensity],
+    contentOpacity: [1, Math.max(0.18, 1 - 0.86 * safeIntensity)],
+    ambientY: [0, -70 * safeIntensity],
+    ambientOpacity: [0.55, 0],
+  };
+};
+
+export const createReducedMotionScene = (): ScrollScenePreset => ({
+  backgroundFar: [0, 0],
+  backgroundNear: [0, 0],
+  contentY: [0, 0],
+  contentScale: [1, 1],
+  contentOpacity: [1, 1],
+  ambientY: [0, 0],
+  ambientOpacity: [0.15, 0.15],
+});
+
+export const getSectionFocusRange = (
+  index: number,
+  total: number,
+  spread = 0.2
+): [number, number, number] => {
+  const safeTotal = Math.max(1, total);
+  const center = clampProgress((index + 0.5) / safeTotal);
+  const safeSpread = Math.min(0.35, Math.max(0.08, spread));
+
+  return [
+    clampProgress(center - safeSpread),
+    center,
+    clampProgress(center + safeSpread),
+  ];
+};
