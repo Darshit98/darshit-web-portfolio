@@ -1,7 +1,11 @@
-﻿import { MouseEvent, useEffect, useState } from "react";
+// cspell:ignore Darshit
+
+import { MouseEvent, useEffect, useState } from "react";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
+
+const HEADER_SCROLL_OFFSET = 88;
 
 const Header = () => {
   const [mounted, setMounted] = useState(false);
@@ -30,7 +34,7 @@ const Header = () => {
         "#contact",
       ];
 
-      const scrollPosition = window.scrollY + 120;
+      const scrollPosition = window.scrollY + HEADER_SCROLL_OFFSET;
 
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = document.querySelector(sections[i]) as HTMLElement | null;
@@ -54,7 +58,7 @@ const Header = () => {
     if (!href.startsWith("#")) return;
 
     event.preventDefault();
-    scrollTo(href, -88);
+    scrollTo(href, -HEADER_SCROLL_OFFSET);
     window.history.replaceState(null, "", href);
   };
 
@@ -134,5 +138,3 @@ const Header = () => {
 };
 
 export default Header;
-
-
