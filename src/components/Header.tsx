@@ -1,28 +1,27 @@
-import { MoonIcon, SunIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+// cspell:ignore Darshit
+
+import { MouseEvent, useEffect, useState } from "react";
+import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useSmoothScroll } from "@/hooks/useSmoothScroll";
+
+const HEADER_SCROLL_OFFSET = 88;
 
 const Header = () => {
-  const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("#hero");
   const { scrollY } = useScroll();
+  const { scrollTo } = useSmoothScroll();
 
-  // Prevent hydration mismatch
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Track scroll position
   useMotionValueEvent(scrollY, "change", (latest) => {
     setIsScrolled(latest > 50);
   });
 
-  // Track active section
   useEffect(() => {
     const handleScroll = () => {
       const sections = [
@@ -35,7 +34,7 @@ const Header = () => {
         "#contact",
       ];
 
-      const scrollPosition = window.scrollY + 100;
+      const scrollPosition = window.scrollY + HEADER_SCROLL_OFFSET;
 
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = document.querySelector(sections[i]) as HTMLElement | null;
@@ -47,9 +46,21 @@ const Header = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initial call
+    handleScroll();
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleNavClick = (
+    event: MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
+    if (!href.startsWith("#")) return;
+
+    event.preventDefault();
+    scrollTo(href, -HEADER_SCROLL_OFFSET);
+    window.history.replaceState(null, "", href);
+  };
 
   if (!mounted) {
     return null;
@@ -80,7 +91,8 @@ const Header = () => {
       <div className="container mx-auto">
         <div className="flex h-full items-center justify-between px-4 sm:px-8">
           <motion.a
-            href="#"
+            href="#hero"
+            onClick={(event) => handleNavClick(event, "#hero")}
             className="text-2xl font-heading font-bold text-blue-600 dark:text-blue-400"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -88,13 +100,16 @@ const Header = () => {
           >
             Darshit's Portfolio
           </motion.a>
+
           <nav className="flex items-center space-x-8">
             {navLinks.map((link) => {
               const isActive = activeSection === link.href;
+
               return (
                 <motion.a
                   key={link.href}
                   href={link.href}
+                  onClick={(event) => handleNavClick(event, link.href)}
                   className="relative text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200 hidden md:block"
                   whileHover={{ y: -2 }}
                   transition={{ type: "spring", stiffness: 400, damping: 17 }}
