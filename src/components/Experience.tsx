@@ -27,8 +27,13 @@ const experiences: ExperienceEntry[] = [
     role: "AI Technical Lead",
     period: "April 2025 - Present",
     description: [
-      "Driving AI-led technical direction and production delivery across strategic initiatives.",
-      "Owning architecture decisions and implementation quality for scalable AI systems.",
+      "Owned technical and security governance for Cursor IDE, translating business requirements into access controls, policy guardrails, and rollout standards for safe enterprise adoption.",
+      "Partnered with engineering teams to stand up `.cursor` workspaces with reusable rules, skills, and configuration patterns, accelerating onboarding and standardizing AI-assisted development practices.",
+      "Led technical evaluation of Windsurf, Devin, and Claude Code pilots, assessing architecture fit, security requirements, and workflow impact to guide tooling decisions and enterprise readiness.",
+      "Led AI Appreciation Day platform delivery across 6+ AI apps, resulting in 30+ team-driven AI integration requests.",
+      "Engineered AI-driven software automation for paint shop inspection using OpenCV and Gemini models, enabling early detection of vehicle paint defects before assembly-line exit and reducing rework risk.",
+      "Provisioned and governed OpenAI models on Azure using Terraform (IaC), standardizing region selection, model choice, token limits, and access controls for secure, scalable usage.",
+      "Owned enterprise administration and production delivery for Glean AI across 12K+ users, integrating internal systems via MCP and shipping agents such as Intelligent Reminders, Plan My Day, and Supplier Briefing to reduce missed actions and context switching.",
     ],
     logo: rivianLogo,
   },
@@ -303,9 +308,3 @@ const ExperienceCard = ({ entry }: { entry: ExperienceEntry }) => {
 };
 
 export default Experience;
-
-
-
-
-
-
